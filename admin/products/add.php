@@ -17,28 +17,46 @@ move_uploaded_file($tmp,"../../uploads/products/".$image);
 mysqli_query($conn,"INSERT INTO products(name,category_id,purchase_price,sale_price,stock,image)
 VALUES('$name','$category','$purchase','$sale','$stock','$image')");
 
+echo "Product Added Successfully";
+
 }
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Add Product</title>
+
+</head>
+
+<body>
 
 <h2>Add Product</h2>
 
 <form method="post" enctype="multipart/form-data">
 
 Product Name <br>
-<input type="text" name="name"><br><br>
+<input type="text" name="name" required>
+
+<br><br>
 
 Category <br>
 
 <select name="category">
 
 <?php
+
 $cat = mysqli_query($conn,"SELECT * FROM categories");
 
 while($c = mysqli_fetch_assoc($cat)){
+
 ?>
 
 <option value="<?php echo $c['id']; ?>">
+
 <?php echo $c['name']; ?>
+
 </option>
 
 <?php } ?>
@@ -48,17 +66,28 @@ while($c = mysqli_fetch_assoc($cat)){
 <br><br>
 
 Purchase Price <br>
-<input type="text" name="purchase_price"><br><br>
+<input type="text" name="purchase_price">
+
+<br><br>
 
 Sale Price <br>
-<input type="text" name="sale_price"><br><br>
+<input type="text" name="sale_price">
+
+<br><br>
 
 Stock <br>
-<input type="text" name="stock"><br><br>
+<input type="text" name="stock">
+
+<br><br>
 
 Product Image <br>
-<input type="file" name="image"><br><br>
+<input type="file" name="image">
+
+<br><br>
 
 <button name="save">Add Product</button>
 
 </form>
+
+</body>
+</html>
