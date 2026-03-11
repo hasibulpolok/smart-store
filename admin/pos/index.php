@@ -2,13 +2,29 @@
 include("../../config/db.php");
 ?>
 
-<h2>POS System</h2>
+<!DOCTYPE html>
+<html>
+<head>
 
-<form action="add_cart.php" method="post">
+<title>POS System</title>
 
-Product
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
-<select name="product">
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+<!-- Product List -->
+
+<div class="col-md-8">
+
+<h3>Products</h3>
+
+<div class="row">
 
 <?php
 
@@ -17,33 +33,51 @@ $p = mysqli_query($conn,"SELECT * FROM products");
 while($row=mysqli_fetch_assoc($p)){
 ?>
 
-<option value="<?php echo $row['id']; ?>">
-<?php echo $row['name']; ?>
-</option>
+<div class="col-md-3">
 
-<?php } ?>
+<div class="card mb-3">
 
-</select>
+<div class="card-body text-center">
 
-Quantity
-<input type="number" name="qty" required>
+<h6><?php echo $row['name']; ?></h6>
 
-<button>Add to Cart</button>
+<p>Price: <?php echo $row['sale_price']; ?></p>
+
+<form action="add_cart.php" method="post">
+
+<input type="hidden" name="product" value="<?php echo $row['id']; ?>">
+
+<input type="number" name="qty" value="1" class="form-control mb-2">
+
+<button class="btn btn-primary btn-sm">Add</button>
 
 </form>
 
-<hr>
+</div>
 
-<h3>Cart Items</h3>
+</div>
 
-<table border="1" cellpadding="10">
+</div>
+
+<?php } ?>
+
+</div>
+
+</div>
+
+<!-- Cart -->
+
+<div class="col-md-4">
+
+<h3>Cart</h3>
+
+<table class="table table-bordered">
 
 <tr>
 <th>Product</th>
 <th>Qty</th>
-<th>Price</th>
 <th>Total</th>
-<th>Action</th>
+<th></th>
 </tr>
 
 <?php
@@ -67,11 +101,10 @@ $total += $r['total'];
 
 <td><?php echo $r['product']; ?></td>
 <td><?php echo $r['qty']; ?></td>
-<td><?php echo $r['price']; ?></td>
 <td><?php echo $r['total']; ?></td>
 
 <td>
-<a href="remove_cart.php?id=<?php echo $r['id']; ?>">Remove</a>
+<a href="remove_cart.php?id=<?php echo $r['id']; ?>" class="btn btn-danger btn-sm">X</a>
 </td>
 
 </tr>
@@ -80,17 +113,21 @@ $total += $r['total'];
 
 </table>
 
-<h3>Grand Total: <?php echo $total; ?></h3>
-
-<br>
+<h4>Total: <?php echo $total; ?></h4>
 
 <form action="checkout.php" method="post">
 
-Customer Name
-<input type="text" name="customer" required>
+<input type="text" name="customer" class="form-control mb-2" placeholder="Customer Name">
 
-<br><br>
-
-<button>Checkout</button>
+<button class="btn btn-success w-100">Checkout</button>
 
 </form>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
