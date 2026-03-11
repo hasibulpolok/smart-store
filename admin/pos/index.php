@@ -8,76 +8,68 @@ include("../../config/db.php");
 
 <title>POS System</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<style>
+
+table{
+border-collapse: collapse;
+width:100%;
+}
+
+th,td{
+border:1px solid black;
+padding:10px;
+text-align:center;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="container-fluid">
+<h2>POS System</h2>
 
-<div class="row">
+<form action="add_cart.php" method="post">
 
-<!-- Product List -->
+Product
 
-<div class="col-md-8">
-
-<h3>Products</h3>
-
-<div class="row">
+<select name="product">
 
 <?php
 
-$p = mysqli_query($conn,"SELECT * FROM products");
+$p=mysqli_query($conn,"SELECT * FROM products");
 
 while($row=mysqli_fetch_assoc($p)){
 ?>
 
-<div class="col-md-3">
-
-<div class="card mb-3">
-
-<div class="card-body text-center">
-
-<h6><?php echo $row['name']; ?></h6>
-
-<p>Price: <?php echo $row['sale_price']; ?></p>
-
-<form action="add_cart.php" method="post">
-
-<input type="hidden" name="product" value="<?php echo $row['id']; ?>">
-
-<input type="number" name="qty" value="1" class="form-control mb-2">
-
-<button class="btn btn-primary btn-sm">Add</button>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
+<option value="<?php echo $row['id']; ?>">
+<?php echo $row['name']; ?>
+</option>
 
 <?php } ?>
 
-</div>
+</select>
 
-</div>
+Quantity
 
-<!-- Cart -->
+<input type="number" name="qty" value="1">
 
-<div class="col-md-4">
+<button>Add</button>
 
-<h3>Cart</h3>
+</form>
 
-<table class="table table-bordered">
+<hr>
+
+<h3>Cart Items</h3>
+
+<table>
 
 <tr>
 <th>Product</th>
 <th>Qty</th>
+<th>Price</th>
 <th>Total</th>
-<th></th>
+<th>Action</th>
 </tr>
 
 <?php
@@ -101,10 +93,11 @@ $total += $r['total'];
 
 <td><?php echo $r['product']; ?></td>
 <td><?php echo $r['qty']; ?></td>
+<td><?php echo $r['price']; ?></td>
 <td><?php echo $r['total']; ?></td>
 
 <td>
-<a href="remove_cart.php?id=<?php echo $r['id']; ?>" class="btn btn-danger btn-sm">X</a>
+<a href="remove_cart.php?id=<?php echo $r['id']; ?>">Remove</a>
 </td>
 
 </tr>
@@ -113,21 +106,20 @@ $total += $r['total'];
 
 </table>
 
-<h4>Total: <?php echo $total; ?></h4>
+<h3>Grand Total: <?php echo $total; ?></h3>
+
+<br>
 
 <form action="checkout.php" method="post">
 
-<input type="text" name="customer" class="form-control mb-2" placeholder="Customer Name">
+Customer Name
+<input type="text" name="customer">
 
-<button class="btn btn-success w-100">Checkout</button>
+<br><br>
+
+<button>Checkout</button>
 
 </form>
-
-</div>
-
-</div>
-
-</div>
 
 </body>
 </html>
