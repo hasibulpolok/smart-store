@@ -5,17 +5,12 @@ if(isset($_POST['sell'])){
 
 $product = $_POST['product'];
 $qty = $_POST['qty'];
-
-$p = mysqli_query($conn,"SELECT * FROM products WHERE id=$product");
-$row = mysqli_fetch_assoc($p);
-
-$price = $row['sale_price'];
+$price = $_POST['price'];
 $total = $price * $qty;
 
 mysqli_query($conn,"INSERT INTO sales(product_id,qty,price,total)
 VALUES('$product','$qty','$price','$total')");
 
-// stock reduce
 mysqli_query($conn,"UPDATE products SET stock = stock - $qty WHERE id=$product");
 
 echo "<p style='color:green'>Sale Completed</p>";
@@ -26,18 +21,48 @@ echo "<p style='color:green'>Sale Completed</p>";
 <!DOCTYPE html>
 <html>
 <head>
-<title>POS Sales</title>
+
+<title>POS System</title>
+
+<script>
+
+function getPrice(){
+
+var select = document.getElementById("product");
+var price = select.options[select.selectedIndex].getAttribute("data-price");
+
+document.getElementById("price").value = price;
+
+calculate();
+
+}
+
+function calculate(){
+
+var price = document.getElementById("price").value;
+var qty = document.getElementById("qty").value;
+
+var total = price * qty;
+
+document.getElementById("total").value = total;
+
+}
+
+</script>
+
 </head>
 
 <body>
 
-<h2>Sell Product (POS)</h2>
+<h2>POS Billing System</h2>
 
 <form method="post">
 
 Product <br>
 
-<select name="product">
+<select name="product" id="product" onchange="getPrice()">
+
+<option value="">Select Product</option>
 
 <?php
 
@@ -47,7 +72,7 @@ while($r = mysqli_fetch_assoc($p)){
 
 ?>
 
-<option value="<?php echo $r['id']; ?>">
+<option value="<?php echo $r['id']; ?>" data-price="<?php echo $r['sale_price']; ?>">
 
 <?php echo $r['name']; ?>
 
@@ -59,13 +84,25 @@ while($r = mysqli_fetch_assoc($p)){
 
 <br><br>
 
-Quantity <br>
+Price <br>
 
-<input type="number" name="qty" required>
+<input type="text" name="price" id="price" readonly>
 
 <br><br>
 
-<button type="submit" name="sell">Sell Product</button>
+Quantity <br>
+
+<input type="number" name="qty" id="qty" onkeyup="calculate()">
+
+<br><br>
+
+Total <br>
+
+<input type="text" id="total" readonly>
+
+<br><br>
+
+<button name="sell">Sell Product</button>
 
 </form>
 
