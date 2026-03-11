@@ -1,4 +1,5 @@
 <?php
+
 include("../../config/db.php");
 
 $product=$_POST['product'];
@@ -14,3 +15,5 @@ mysqli_query($conn,"INSERT INTO cart(product_id,qty,price,total)
 VALUES('$product','$qty','$price','$total')");
 
 header("Location:index.php");
+
+?>
