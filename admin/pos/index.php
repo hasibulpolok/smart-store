@@ -26,9 +26,9 @@ while($row=mysqli_fetch_assoc($p)){
 </select>
 
 Quantity
-<input type="number" name="qty">
+<input type="number" name="qty" required>
 
-<button>Add</button>
+<button>Add to Cart</button>
 
 </form>
 
@@ -36,13 +36,14 @@ Quantity
 
 <h3>Cart Items</h3>
 
-<table border="1">
+<table border="1" cellpadding="10">
 
 <tr>
 <th>Product</th>
 <th>Qty</th>
 <th>Price</th>
 <th>Total</th>
+<th>Action</th>
 </tr>
 
 <?php
@@ -69,6 +70,10 @@ $total += $r['total'];
 <td><?php echo $r['price']; ?></td>
 <td><?php echo $r['total']; ?></td>
 
+<td>
+<a href="remove_cart.php?id=<?php echo $r['id']; ?>">Remove</a>
+</td>
+
 </tr>
 
 <?php } ?>
@@ -77,4 +82,15 @@ $total += $r['total'];
 
 <h3>Grand Total: <?php echo $total; ?></h3>
 
-<a href="checkout.php">Checkout</a>
+<br>
+
+<form action="checkout.php" method="post">
+
+Customer Name
+<input type="text" name="customer" required>
+
+<br><br>
+
+<button>Checkout</button>
+
+</form>
