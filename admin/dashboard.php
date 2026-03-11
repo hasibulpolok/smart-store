@@ -26,6 +26,16 @@ $s=mysqli_fetch_assoc($sales);
 
 <hr>
 
+<hr>
+
+<a href="products/add.php">Add Product</a>
+
+<br><br>
+
+<a href="products/list.php">Product List</a>
+
+<br><br>
+
 <a href="pos/index.php">POS System</a>
 
 <br><br>
@@ -35,3 +45,4 @@ $s=mysqli_fetch_assoc($sales);
 <br><br>
 
 <a href="logout.php">Logout</a>
+
