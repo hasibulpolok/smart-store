@@ -1,5 +1,6 @@
 <?php
 
+
 include("../../config/db.php");
 
 $product=$_POST['product'];

@@ -4,12 +4,12 @@ include("../config/db.php");
 
 if(isset($_POST['login'])){
 
-$user = $_POST['username'];
-$pass = $_POST['password'];
+$user=$_POST['username'];
+$pass=$_POST['password'];
 
-$sql = "SELECT * FROM admin WHERE username='$user' AND password='$pass'";
+$sql="SELECT * FROM admin WHERE username='$user' AND password='$pass'";
 
-$result = mysqli_query($conn,$sql);
+$result=mysqli_query($conn,$sql);
 
 if(mysqli_num_rows($result)>0){
 
@@ -19,7 +19,7 @@ header("Location:dashboard.php");
 
 }else{
 
-echo "Login Failed";
+echo "Invalid Login";
 
 }
 
@@ -30,12 +30,12 @@ echo "Login Failed";
 
 <form method="post">
 
-Username
+Username <br>
 <input type="text" name="username">
 
 <br><br>
 
-Password
+Password <br>
 <input type="password" name="password">
 
 <br><br>
