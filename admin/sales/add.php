@@ -11,9 +11,11 @@ $total = $price * $qty;
 mysqli_query($conn,"INSERT INTO sales(product_id,qty,price,total)
 VALUES('$product','$qty','$price','$total')");
 
+$sale_id = mysqli_insert_id($conn);
+
 mysqli_query($conn,"UPDATE products SET stock = stock - $qty WHERE id=$product");
 
-echo "<p style='color:green'>Sale Completed</p>";
+header("Location: invoice.php?id=".$sale_id);
 
 }
 ?>
@@ -22,7 +24,7 @@ echo "<p style='color:green'>Sale Completed</p>";
 <html>
 <head>
 
-<title>POS System</title>
+<title>POS Billing</title>
 
 <script>
 
@@ -54,7 +56,7 @@ document.getElementById("total").value = total;
 
 <body>
 
-<h2>POS Billing System</h2>
+<h2>POS System</h2>
 
 <form method="post">
 
@@ -85,19 +87,16 @@ while($r = mysqli_fetch_assoc($p)){
 <br><br>
 
 Price <br>
-
 <input type="text" name="price" id="price" readonly>
 
 <br><br>
 
 Quantity <br>
-
 <input type="number" name="qty" id="qty" onkeyup="calculate()">
 
 <br><br>
 
 Total <br>
-
 <input type="text" id="total" readonly>
 
 <br><br>
