@@ -1,59 +1,66 @@
 <?php
-session_start();
+include("../config/db.php");
 
-if(!isset($_SESSION['user_id'])){
-header("Location: ../login.php");
-}
+$product = mysqli_query($conn,"SELECT COUNT(*) AS total FROM products");
+$p = mysqli_fetch_assoc($product);
+
+$sales = mysqli_query($conn,"SELECT SUM(total) AS total FROM sales");
+$s = mysqli_fetch_assoc($sales);
+
+$stock = mysqli_query($conn,"SELECT COUNT(*) AS low FROM products WHERE stock < 5");
+$l = mysqli_fetch_assoc($stock);
+
 ?>
 
-<?php include("../includes/header.php"); ?>
+<!DOCTYPE html>
+<html>
+<head>
 
-<?php include("../includes/sidebar.php"); ?>
+<title>Admin Dashboard</title>
 
-<div class="content">
+<style>
 
-<h2>Dashboard</h2>
+.box{
+width:200px;
+padding:20px;
+margin:20px;
+background:#f2f2f2;
+display:inline-block;
+text-align:center;
+font-size:18px;
+}
 
-<div class="row">
+</style>
 
-<div class="col-md-3">
-<div class="card bg-primary text-white">
-<div class="card-body">
-<h5>Total Products</h5>
-<h3>120</h3>
-</div>
-</div>
-</div>
+</head>
 
-<div class="col-md-3">
-<div class="card bg-success text-white">
-<div class="card-body">
-<h5>Total Sales</h5>
-<h3>$5000</h3>
-</div>
-</div>
-</div>
+<body>
 
-<div class="col-md-3">
-<div class="card bg-warning text-white">
-<div class="card-body">
-<h5>Customers</h5>
-<h3>85</h3>
-</div>
-</div>
-</div>
+<h2>Smart Store Dashboard</h2>
 
-<div class="col-md-3">
-<div class="card bg-danger text-white">
-<div class="card-body">
-<h5>Low Stock</h5>
-<h3>5</h3>
-</div>
-</div>
-</div>
+<div class="box">
+
+<h3>Total Products</h3>
+
+<?php echo $p['total']; ?>
 
 </div>
 
+<div class="box">
+
+<h3>Total Sales</h3>
+
+<?php echo $s['total']; ?>
+
 </div>
 
-<?php include("../includes/footer.php"); ?>
+<div class="box">
+
+<h3>Low Stock</h3>
+
+<?php echo $l['low']; ?>
+
+</div>
+
+</body>
+</html>

@@ -15,12 +15,23 @@ $total = $price * $qty;
 mysqli_query($conn,"INSERT INTO sales(product_id,qty,price,total)
 VALUES('$product','$qty','$price','$total')");
 
-echo "Sale Completed";
+// stock reduce
+mysqli_query($conn,"UPDATE products SET stock = stock - $qty WHERE id=$product");
+
+echo "<p style='color:green'>Sale Completed</p>";
 
 }
 ?>
 
-<h2>POS / Sell Product</h2>
+<!DOCTYPE html>
+<html>
+<head>
+<title>POS Sales</title>
+</head>
+
+<body>
+
+<h2>Sell Product (POS)</h2>
 
 <form method="post">
 
@@ -37,7 +48,9 @@ while($r = mysqli_fetch_assoc($p)){
 ?>
 
 <option value="<?php echo $r['id']; ?>">
+
 <?php echo $r['name']; ?>
+
 </option>
 
 <?php } ?>
@@ -47,10 +60,14 @@ while($r = mysqli_fetch_assoc($p)){
 <br><br>
 
 Quantity <br>
-<input type="number" name="qty">
+
+<input type="number" name="qty" required>
 
 <br><br>
 
-<button name="sell">Sell</button>
+<button type="submit" name="sell">Sell Product</button>
 
 </form>
+
+</body>
+</html>
